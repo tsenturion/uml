@@ -1,0 +1,40 @@
+@startuml
+' Communication Diagram (Диаграмма кооперации)
+' Диаграмма описывает один конкретный сценарий: "Оформление заказа".
+' В PlantUML коммуникационная диаграмма строится как обычная object-диаграмма
+' с нумерованными сообщениями на связях.
+
+title Communication Diagram — Оформление заказа
+
+' === ОБЪЕКТЫ ===
+' object — это экземпляр (или концептуальный объект).
+' Формат имяОбъекта:ИмяКласса фиксирует роль и тип.
+object user:User
+object controller:OrderController
+object service:OrderService
+object payment:PaymentService
+object repository:OrderRepository
+
+' === СВЯЗИ (каналы взаимодействия) ===
+' Простая линия означает, что объекты "знают" друг о друге
+' и потенциально могут обмениваться сообщениями.
+user -- controller
+controller -- service
+service -- payment
+service -- repository
+
+' === СООБЩЕНИЯ ===
+' Сообщения подписываются на существующих связях.
+' Нумерация задаёт порядок выполнения (временной оси нет).
+
+user -> controller : 1: createOrder(data)
+
+controller -> service : 2: processOrder(data)
+
+service -> payment : 2.1: charge(amount)
+
+service -> repository : 2.2: save(order)
+
+controller -> user : 3: confirmation()
+
+@enduml
