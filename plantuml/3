@@ -1,0 +1,42 @@
+@startuml
+' Component Diagram (Диаграмма компонентов)
+' В PlantUML компонентная диаграмма строится через элементы component + interface
+' и зависимости, заданные через "предоставляет/требует" (lollipop/socket) и usage.
+
+title Component Diagram — Интернет-магазин (логическая архитектура)
+
+skinparam shadowing false
+
+' === ИНТЕРФЕЙСЫ (КОНТРАКТЫ) ===
+' interface задаёт контракт, который могут предоставлять и/или требовать компоненты.
+interface "ICatalogAPI" as I_Catalog
+interface "IOrderAPI" as I_Order
+interface "IPaymentAPI" as I_Payment
+interface "INotificationAPI" as I_Notify
+
+' === КОМПОНЕНТЫ ===
+' component — архитектурная единица: замкнутый модуль, заменяемый, с контрактами наружу.
+component "Пользовательский интерфейс" as C_UI
+component "Каталог" as C_Catalog
+component "Заказы" as C_Order
+component "Платежи" as C_Payment
+component "Уведомления" as C_Notify
+
+' === ПРЕДОСТАВЛЯЕМЫЕ ИНТЕРФЕЙСЫ (lollipop) ===
+' Синтаксис: Компонент - ИНТЕРФЕЙС означает "компонент предоставляет интерфейс".
+C_Catalog - I_Catalog
+C_Order   - I_Order
+C_Payment - I_Payment
+C_Notify  - I_Notify
+
+' === ТРЕБУЕМЫЕ ИНТЕРФЕЙСЫ (socket) ===
+' Синтаксис: Компонент ..> ИНТЕРФЕЙС означает зависимость (использование контракта).
+' Это не показывает порядок вызовов, а фиксирует, что компонент нуждается в контракте.
+C_UI ..> I_Catalog
+C_UI ..> I_Order
+
+C_Order ..> I_Payment
+C_Order ..> I_Notify
+C_Order ..> I_Catalog
+
+@enduml
