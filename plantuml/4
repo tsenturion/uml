@@ -1,0 +1,33 @@
+@startuml
+' Deployment Diagram (Диаграмма развертывания)
+' Диаграмма показывает физическую инфраструктуру и размещение артефактов на узлах.
+' В PlantUML используются элементы node и artifact.
+
+title Deployment Diagram — Веб-приложение
+
+skinparam shadowing false
+
+' === КЛИЕНТСКИЙ УЗЕЛ ===
+' node — физический или виртуальный вычислительный ресурс.
+node "Client Device\n<<device>>" as Client {
+    ' artifact — физическая единица ПО, размещаемая на узле.
+    artifact "browser" as Browser
+}
+
+' === СЕРВЕР ПРИЛОЖЕНИЙ ===
+node "Application Server\n<<server>>" as AppServer {
+    artifact "backend.jar" as Backend
+}
+
+' === СЕРВЕР БАЗЫ ДАННЫХ ===
+node "Database Server\n<<server>>" as DBServer {
+    artifact "database schema" as DB
+}
+
+' === СВЯЗИ МЕЖДУ УЗЛАМИ ===
+' Связи отражают сетевые каналы коммуникации.
+' Подпись указывает тип взаимодействия (без избыточной детализации).
+Client --> AppServer : HTTPS
+AppServer --> DBServer : TCP/IP (SQL)
+
+@enduml
